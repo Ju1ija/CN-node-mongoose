@@ -1,0 +1,25 @@
+{
+  "name": "W7D4PM",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ju1ija/CN-node-mongoose.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ju1ija/CN-node-mongoose/issues"
+  },
+  "homepage": "https://github.com/Ju1ija/CN-node-mongoose#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "mongoose": "^6.0.14",
+    "yargs": "^17.3.0"
+  }
+}
