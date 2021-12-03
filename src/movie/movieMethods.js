@@ -12,6 +12,36 @@ exports.addMovie = async (movieObj) => {
   }
 }
 
+exports.addActor = async (movieId, actorName) => {
+  try {
+    const movie = await Movie.findById(movieId);
+    if (!movie.actor.includes(actorName)) {
+      await Movie.findByIdAndUpdate(movieId, { $push: { actor: actorName } });
+      console.log(`Successfully added ${actorName}.`);
+    } else {
+      console.log(`${actorName} already exists.`);
+    }
+    mongoose.connection.close();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+exports.removeActor = async (movieId, actorName) => {
+  try {
+    const movie = await Movie.findById(movieId);
+    if (movie.actor.includes(actorName)) {
+      await Movie.findByIdAndUpdate(movieId, { $pull: { actor: actorName } });
+      console.log(`Successfully removed ${actorName}.`);
+    } else {
+      console.log(`${actorName} was not found.`);
+    }
+    mongoose.connection.close();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 exports.listMovies = async () => {
   try {
     const list = await Movie.find({});
