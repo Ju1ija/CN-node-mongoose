@@ -23,24 +23,27 @@ exports.listMovies = async () => {
 
 exports.filterMovies = async (value1, value2) => {
   try {
-    if (value1 === "released before") {
-      const matches = await Movie.find({ release: { $lt: value2 } });
-      console.log(matches.length === 0 ? "No matches found." : matches);
-    } else if (value1 === "released after") {
-      const matches = await Movie.find({ release: { $gte: value2 } });
-      console.log(matches.length === 0 ? "No matches found." : matches);
-    } else if (value1 === "rated above") {
-      const matches = await Movie.find({ rating: { $gte: value2 } });
-      console.log(matches.length === 0 ? "No matches found." : matches);
-    } else if (value1 === "rated below") {
-      const matches = await Movie.find({ rating: { $lt: value2 } });
-      console.log(matches.length === 0 ? "No matches found." : matches);
-    } else {
-      const movieObj = {}
-      movieObj[value1] = value2;
-      const matches = await Movie.find(movieObj);
-      console.log(matches.length === 0 ? "No matches found." : matches);
+    let matches = [];
+
+    switch (value1) {
+      case "released before":
+        matches = await Movie.find({ release: { $lt: value2 } });
+        break;
+      case "released after":
+        matches = await Movie.find({ release: { $gte: value2 } });
+        break;
+      case "rated above":
+        matches = await Movie.find({ rating: { $gte: value2 } });
+        break;
+      case "rated below":
+        matches = await Movie.find({ rating: { $lt: value2 } });
+        break;
+      default:
+        const movieObj = {}
+        movieObj[value1] = value2;
+        matches = await Movie.find(movieObj);
     }
+    console.log(matches.length === 0 ? "No matches found." : matches);
     mongoose.connection.close();
   } catch (error) {
     console.log(error);
