@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Movie = require("./movieModels");
 
 exports.addMovie = async (movieObj) => {
@@ -5,6 +6,7 @@ exports.addMovie = async (movieObj) => {
     const movie = await new Movie(movieObj);
     await movie.save();
     console.log(`Successfully added ${movie.title} (${movie.release}).`);
+    mongoose.connection.close();
   } catch (error) {
     console.log(error);
   }
@@ -13,24 +15,44 @@ exports.addMovie = async (movieObj) => {
 exports.listMovies = async () => {
   try {
     console.log(await Movie.find({}));
+    mongoose.connection.close();
   } catch (error) {
     console.log(error);
   }
 }
 
-// exports.filterMovies = async () => {
-//   try {
-
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
+exports.filterMovies = async (value1, value2) => {
+  try {
+    if (value1 === "released before") {
+      const matches = await Movie.find({ release: { $lt: value2 } });
+      console.log(matches.length === 0 ? "No matches found." : matches);
+    } else if (value1 === "released after") {
+      const matches = await Movie.find({ release: { $gte: value2 } });
+      console.log(matches.length === 0 ? "No matches found." : matches);
+    } else if (value1 === "rated above") {
+      const matches = await Movie.find({ rating: { $gte: value2 } });
+      console.log(matches.length === 0 ? "No matches found." : matches);
+    } else if (value1 === "rated below") {
+      const matches = await Movie.find({ rating: { $lt: value2 } });
+      console.log(matches.length === 0 ? "No matches found." : matches);
+    } else {
+      const movieObj = {}
+      movieObj[value1] = value2;
+      const matches = await Movie.find(movieObj);
+      console.log(matches.length === 0 ? "No matches found." : matches);
+    }
+    mongoose.connection.close();
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 exports.updateMovie = async (movieId, movieObj) => {
   try {
     await Movie.findByIdAndUpdate(movieId, movieObj);
     const movie = await Movie.findById(movieId);
     console.log(`${movie.title} (${movie.release}) has been updated.`);
+    mongoose.connection.close();
   } catch (error) {
     console.log(error);
   }
@@ -41,6 +63,7 @@ exports.deleteMovie = async (movieId) => {
     const movie = await Movie.findById(movieId);
     console.log(`${movie.title} (${movie.release}) has been deleted.`);
     await Movie.deleteOne({ _id: movieId });
+    mongoose.connection.close();
   } catch (error) {
     console.log(error);
   }
