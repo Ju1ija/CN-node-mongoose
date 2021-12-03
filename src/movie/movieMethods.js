@@ -14,7 +14,8 @@ exports.addMovie = async (movieObj) => {
 
 exports.listMovies = async () => {
   try {
-    console.log(await Movie.find({}));
+    const list = await Movie.find({});
+    console.log(list.length === 0 ? "No items found." : list);
     mongoose.connection.close();
   } catch (error) {
     console.log(error);
@@ -64,8 +65,8 @@ exports.updateMovie = async (movieId, movieObj) => {
 exports.deleteMovie = async (movieId) => {
   try {
     const movie = await Movie.findById(movieId);
-    console.log(`${movie.title} (${movie.release}) has been deleted.`);
     await Movie.deleteOne({ _id: movieId });
+    console.log(`${movie.title} (${movie.release}) has been deleted.`);
     mongoose.connection.close();
   } catch (error) {
     console.log(error);
