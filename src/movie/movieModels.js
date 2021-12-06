@@ -12,7 +12,7 @@ const movieSchema = new mongoose.Schema({
     max: new Date().getFullYear(),
     required: true
   },
-  actor: [String],
+  actors: [String],
   genre: String,
   rating: {
     type: Number,

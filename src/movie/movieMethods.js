@@ -15,8 +15,8 @@ exports.addMovie = async (movieObj) => {
 exports.addActor = async (movieId, actorName) => {
   try {
     const movie = await Movie.findById(movieId);
-    if (!movie.actor.includes(actorName)) {
-      await Movie.findByIdAndUpdate(movieId, { $push: { actor: actorName } });
+    if (!movie.actors.includes(actorName)) {
+      await Movie.findByIdAndUpdate(movieId, { $push: { actors: actorName } });
       console.log(`Successfully added ${actorName}.`);
     } else {
       console.log(`${actorName} already exists.`);
@@ -30,8 +30,8 @@ exports.addActor = async (movieId, actorName) => {
 exports.removeActor = async (movieId, actorName) => {
   try {
     const movie = await Movie.findById(movieId);
-    if (movie.actor.includes(actorName)) {
-      await Movie.findByIdAndUpdate(movieId, { $pull: { actor: actorName } });
+    if (movie.actors.includes(actorName)) {
+      await Movie.findByIdAndUpdate(movieId, { $pull: { actors: actorName } });
       console.log(`Successfully removed ${actorName}.`);
     } else {
       console.log(`${actorName} was not found.`);
@@ -74,6 +74,7 @@ exports.filterMovies = async (value1, value2) => {
         movieObj[value1] = value2;
         matches = await Movie.find(movieObj);
     }
+
     console.log(matches.length === 0 ? "No matches found." : matches);
     mongoose.connection.close();
   } catch (error) {

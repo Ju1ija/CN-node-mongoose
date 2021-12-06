@@ -5,7 +5,7 @@ const { addMovie, addActor, removeActor, listMovies, filterMovies, updateMovie, 
 const app = async (args) => {
   switch (process.argv[2]) {
     case "add":
-      addMovie({ title: args.title, release: args.release, actor: args.actor, genre: args.genre, rating: args.rating });
+      addMovie({ title: args.title, release: args.release, actors: args.actor, genre: args.genre, rating: args.rating });
       break;
     case "add actor":
       addActor(process.argv[3], process.argv[4]);
@@ -32,7 +32,7 @@ const app = async (args) => {
       filterMovies(process.argv[2], process.argv[3]);
       break;
     case "update":
-      updateMovie({ _id: args.id }, { title: args.title, release: args.release, actor: args.actor, genre: args.genre, rating: args.rating });
+      updateMovie({ _id: args.id }, { title: args.title, release: args.release, actors: args.actor, genre: args.genre, rating: args.rating });
       break;
     case "delete":
       deleteMovie({ _id: args.id });
